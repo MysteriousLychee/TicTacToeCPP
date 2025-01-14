@@ -1,6 +1,8 @@
 #include <iostream>
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::cin;
 
 char board[3][3] = {
     { ' ', ' ', ' ' },
@@ -9,52 +11,47 @@ char board[3][3] = {
 };
 
 bool isPlayerX = true;
-bool gameOver = false;
 
-string strRow;
-string strBox;
-int intRow;
-int intBox;
+int row;
+int box;
 
 int moves;
 
-void checkForGameOver() {
+bool checkForGameOver() {
 
     // Tie Check
     if (moves >= 9) {
-        gameOver = true;
+        return true;
     }
 
     // Horizontal Checks
     for (int i = 0; i < 3; i++) {
-        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] &&
-            board[i][0] != ' ' && board[i][1] != ' ' && board[i][2] != ' ') {
-            cout << "Winning player is " << board[i][0] << "! Congrats!" <<endl;
-            gameOver = true;
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][1] != ' ') {
+            cout << "Winning player is " << board[i][0] << "! Congrats!" << endl;
+            return true;
         }
     }
 
     // Vertical Checks
     for (int i = 0; i < 3; i++) {
-        if (board[0][i] == board[1][i] && board[1][i] == board[2][i] &&
-            board[0][i] != ' ' && board[1][i] != ' ' && board[2][i] != ' ') {
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[1][i] != ' ') {
             cout << "Winning player is " << board[0][i] << "! Congrats!" << endl;
-            gameOver = true;
+            return true;
         }
     }
 
     // Diagonal checks
-    if (board[0][0] == board[1][1] && board[1][1] == board[2][2] &&
-        board[0][0] != ' ' && board[1][1] != ' ' && board[2][2] != ' ') {
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != ' ') {
         cout << "Winning player is " << board[1][1] << "! Congrats!" << endl;
-        gameOver = true;
+        return true;
     }
 
-    if (board[0][2] == board[1][1] && board[1][1] == board[2][0] &&
-        board[0][2] != ' ' && board[1][1] != ' ' && board[2][0] != ' ') {
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[1][1] != ' ') {
         cout << "Winning player is " << board[1][1] << "! Congrats!" << endl;
-        gameOver = true;
+        return true;
     }
+
+    return false;
 }
 
 void getMove() {
@@ -65,20 +62,23 @@ void getMove() {
         cout << "It is player O's turn." << endl;
     }
 
+    std::string sRow;
+    std::string sBox;
+
     cout << "Enter the row you'd like to move in (1...3): " << endl;
-    cin >> strRow;
+    cin >> sRow;
     cout << "Enter the box you'd like to move in (1...3): " << endl;
-    cin >> strBox;
-    intRow = stoi(strRow);
-    intBox = stoi(strBox);
-    intRow--;
-    intBox--;
+    cin >> sBox;
+    row = stoi(sRow);
+    box = stoi(sBox);
+    row--;
+    box--;
 }
 
 void makeMove() {
 
-    if (board[intRow][intBox] == ' ') {
-        board[intRow][intBox] = isPlayerX ? 'X' : 'O';
+    if (board[row][box] == ' ') {
+        board[row][box] = isPlayerX ? 'X' : 'O';
     } else {
         getMove();
         makeMove();
@@ -96,16 +96,13 @@ void printBoard() {
     }
 }
 
-[[noreturn]] int main() {
+int main() {
 
     while (true) {
         printBoard();
-        checkForGameOver();
-
-        if (gameOver) {
+        if (checkForGameOver()) {
             break;
         }
-
         getMove();
         makeMove();
         cout << endl;
