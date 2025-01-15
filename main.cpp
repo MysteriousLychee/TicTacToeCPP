@@ -25,9 +25,9 @@ bool checkForGameOver() {
     }
 
     // Horizontal Checks
-    for (int i = 0; i < 3; i++) {
-        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][1] != ' ') {
-            cout << "Winning player is " << board[i][0] << "! Congrats!" << endl;
+    for (const auto & i : board) {
+        if (i[0] == i[1] && i[1] == i[2] && i[1] != ' ') {
+            cout << "Winning player is " << i[0] << "! Congrats!" << endl;
             return true;
         }
     }
@@ -89,10 +89,10 @@ void makeMove() {
 
 void printBoard() {
 
-    for (int i = 0; i < 3; i++) {
-        cout << board[i][0] << "|";
-        cout << board[i][1] << "|";
-        cout << board[i][2] << endl;
+    for (const auto & i : board) {
+        cout << i[0] << "|";
+        cout << i[1] << "|";
+        cout << i[2] << endl;
     }
 }
 
